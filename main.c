@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <conio.h>
 #include "ESD.h"
-#include "playerAttributes.c"
-#include "gameBoardAttributes.c"
 
 #define ESC 27
 #define UP_ARROW 72
@@ -20,11 +18,15 @@ int arrVar[10];
 int score;
 
 // Function definition which reads from a file
+void initialize();
 void readData();
 void menuOptions();
 void progInfo();
 void startGame();
 void settingsGame();
+void newPlayer();
+void newGameBoard();
+void generateItemLocation();
 
 // Colour text definitions - 0: Red, 1: Green, 2: Yellow, 3: Blue
 // Usage Example: colour("This is a String.", 2); // This will print "This is a String" in Yellow.
@@ -35,9 +37,16 @@ void colour(const char *s, int n);
 char keyPress;
 char gamePress;
 
+// Storage for maze runner
+struct mazeRunner playerOne;
+
+// Storage for game board attributes
+struct gameBoard boardOn;
+
 int main()
 {
     system("cls");
+    generateItemLocation();
     menuOptions();
     return 0;
 
@@ -50,6 +59,11 @@ int main()
         printf("The value of entry %d is: %d\n",i ,arrVar[i]);
     }
     return 0;*/
+}
+
+void initialize()
+{
+    //playerOne.xyposition
 }
 
 // Reads from the .txt file "data.txt"
@@ -175,6 +189,8 @@ void startGame()
     // Generate and Print the board.
     printf("\nBoard has been generated");
 
+    // Create Struct of player and Board
+
     // Wait for user input.
     do
     {
@@ -210,6 +226,35 @@ void startGame()
 
 }
 
+void newPlayer()
+{
+
+}
+
+void newGameBoard ()
+{
+    // Read the data file and then store into the
+}
+
+void generateItemLocation()
+{
+    int counter = 0;
+    // Access the game board array
+    for(int z = 0; z<5; z++)
+    {
+        counter++;
+        // Generate item x location
+        int xLocItem = rand() % 75;
+        // Generate item y location
+        int yLocItem = rand() % 25;
+
+        // Assign item location to
+        //gameBoard.xyItem[z] = info
+        printf("XY of %d: %d %d\t", counter, xLocItem, yLocItem);
+        printf("\n");
+    }
+}
+
 void settingsGame()
 {
     colour("\tSettings\n", 2);
@@ -230,3 +275,27 @@ void colour(const char *s, int n) {
   sprintf(t, "\e[%dm", 31 + n % 7);
   colourize(s, t);
 }
+
+struct mazeRunner{
+    // Initialise at index [79,24]
+    int xyposition[1][1];
+    int hasObject; //99 - Yes 98- No
+} mRunner;
+
+struct gameBoard {
+    /* How many items on the board?
+    * Creates this matrix, should populate these with coordinates randomized between a row [0:74] and column [0:24]
+    * [00] [01]
+    * [10] [11]
+    * [20] [21]
+    * [30] [31]
+    * [40] [41]
+    */
+    int xyItem [2][5];
+
+    // Initialise as a StartDrop point x [74:84] and y as 24.
+    int xyStartDrop[2][5];
+
+    int gameScore;
+} gBoard;
+
