@@ -2,8 +2,18 @@
 #include <stdlib.h>
 #include <conio.h>
 #include "ESD.h"
+#include "playerAttributes.c"
+#include "gameBoardAttributes.c"
 
 #define ESC 27
+#define UP_ARROW 72
+#define DOWN_ARROW 80
+#define LEFT_ARROW 75
+#define RIGHT_ARROW 77
+
+/* KNOWN BUGS
+*   - After entering a game and pressing buttons, then leaving, one will have to 'Q' twice to actually exit.
+*/
 
 // Global Variable
 int arrVar[10];
@@ -29,37 +39,6 @@ int main()
 {
     system("cls");
     menuOptions();
-    do
-    {
-        keyPress = getch();
-
-        switch(keyPress)
-        {
-            case 'i':
-                system("cls");
-                progInfo();
-                getch();
-                break;
-            case 'g':
-                printf("\nWe have entered the game start function. Press any key to continue.");
-                //startGame();
-                getch();
-                break;
-            case 's':
-                system("cls");
-                settingsGame();
-                getch();
-                break;
-            case ESC:
-                printf("\nWe have ended the game.");
-                return 0;
-                break;
-
-        }
-        system("cls");
-        menuOptions();
-    } while(TRUE);
-
     return 0;
 
     /*
@@ -114,6 +93,38 @@ void menuOptions()
     printf("Press ");
     colour("ESC", 0);
     printf(" exit game.\n");
+
+    do
+    {
+        keyPress = getch();
+
+        switch(keyPress)
+        {
+            case 'i':
+                system("cls");
+                progInfo();
+                getch();
+                break;
+            case 'g':
+                system("cls");
+                startGame();
+                getch();
+                break;
+            case 's':
+                system("cls");
+                settingsGame();
+                getch();
+                break;
+            case ESC:
+                printf("\nWe have ended the game.");
+                return 0;
+                break;
+
+        }
+        system("cls");
+        menuOptions();
+    } while(TRUE);
+
 }
 
 void progInfo()
@@ -165,13 +176,38 @@ void startGame()
     printf("\nBoard has been generated");
 
     // Wait for user input.
-    gamePress = getch();
+    do
+    {
+        gamePress = getch();
+        switch(gamePress)
+        {
+            case UP_ARROW:
+                printf("\nUP Arrow was pressed");
+                break;
+            case DOWN_ARROW:
+                printf("\nDOWN Arrow was pressed");
+                break;
+            case LEFT_ARROW:
+                printf("\nLEFT Arrow was pressed");
+                break;
+            case RIGHT_ARROW:
+                printf("\nRIGHT Arrow was pressed");
+                break;
+            case 'p':
+                printf("\nPick up object");
+                break;
+            case 'd':
+                printf("\nDrop off object");
+                break;
+        }
 
+    }while(gamePress != 'q');
+
+    printf("\nPress a key to go to main menu.");
     // Switch-Case to determine what to do with user input.
-
+    return 0;
     // Change board, clear screen and reprint the board.
 
-    return 0;
 }
 
 void settingsGame()
