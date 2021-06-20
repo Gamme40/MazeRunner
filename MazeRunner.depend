@@ -1,5 +1,10 @@
 # depslib dependency file v1.0
-1584205420 source:c:\users\amith philip\documents\codeblocksprojects\mazerunnergame\mazerunner\main.c
+1624195282 source:c:\users\amith philip\documents\codeblocksprojects\mazerunnergame\mazerunner\main.c
 	<stdio.h>
 	<stdlib.h>
+	<conio.h>
+	"ESD.h"
+
+1623708691 c:\users\amith philip\documents\codeblocksprojects\mazerunnergame\mazerunner\esd.h
+	<windows.h>
 
