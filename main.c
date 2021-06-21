@@ -18,6 +18,22 @@ int arrVar[10];
 int score;
 int xLocArrItem [5];
 int yLocArrItem [5];
+int tempHold;
+
+// In a grid layout of 40x15 elements, 106 of them are walls.
+int wallCoordinates[106] = {1, 2 , 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                            16, 31, 46, 61, 76, 91, 106, 121, 136, 151, 166, 181,
+                            196, 211, 226, 241, 256, 271, 286, 301, 316, 331, 346,
+                            361, 376, 391, 406, 421, 436, 451, 466, 481, 496, 511,
+                            526, 541, 556, 571, 586, 587, 588, 589, 590, 591, 592,
+                            593, 594, 595, 596, 597, 598, 599, 600, 30, 45, 60, 75,
+                            90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255,
+                            270, 285, 300, 315, 330, 345, 360, 375, 390, 405, 420, 435,
+                            450, 465, 480, 495, 510, 525, 540, 555, 570, 585};
+
+
+int gameBoardWalls[40][15];
+char gBMap[40][15];
 
 // Function definition which reads from a file
 void initialize();
@@ -31,6 +47,8 @@ void newGameBoard();
 void generateItemLocation();
 void generateStartDrop();
 void generateGameFile();
+void convertIntArrtoCharArr();
+void printBoard();
 
 // Colour text definitions - 0: Red, 1: Green, 2: Yellow, 3: Blue
 // Usage Example: colour("This is a String.", 2); // This will print "This is a String" in Yellow.
@@ -57,6 +75,9 @@ struct gameBoard {
 
     // Initialise as a StartDrop point x-index [35:39] and y-index as 14.
     int xyStartDrop[2][5];
+
+    // Game Board array
+    int gameBoardText[40][15];
 
     int gameScore;
 } gBoard;
@@ -96,8 +117,9 @@ void initialize()
     generateStartDrop();
     printf("Generated the start of player and drop off point.\n");
     generateGameFile();
-    printf("Generated the basic game file.\n\n");
-
+    printf("Generated the basic game file.\n");
+    loadStructToArray();
+    printf("Loaded storage and generated walls.\n\n");
     //generateStartDrop();
     /* DEBUG
     for(int i = 0; i < 5; i++)
@@ -105,6 +127,58 @@ void initialize()
         printf("XY: %d %d\n", boardOne.xItemCo[i], boardOne.yItemCo[i]);
     }
     */
+}
+void loadStructToArray()
+{
+    for(int x = 0; x < 40; x++)
+    {
+        for(int y = 0; y < 15; y++)
+        {
+            tempHold = boardOne.gameBoardText[x][y];
+            for (int z = 0; z < 106; z++)
+            {
+                if(boardOne.gameBoardText[x][y] == wallCoordinates[z])
+                {
+                    tempHold = 0;
+                }
+                gameBoardWalls[x][y] = tempHold;
+            }
+            /* DEBUG - Prints array with 0 as a wall
+            printf("%d\t", gameBoardWalls[x][y]);
+            if(boardOne.gameBoardText[x][y] % 15 == 0)
+            {
+                printf("\n");
+            }
+            */
+
+        }
+    }
+}
+
+void printBoard()
+{
+    for(int x = 0; x < 40; x++)
+    {
+        for(int y = 0; y < 15; y++)
+        {
+            printf("%d\t", gameBoardWalls[x][y]);
+            if(boardOne.gameBoardText[x][y] % 15 == 0)
+            {
+                printf("\n");
+            }
+        }
+    }
+}
+
+void convertIntArrtoCharArr()
+{
+    for(int x = 0; x < 40; x++)
+    {
+        for(int y = 0; y < 15; y++)
+        {
+
+        }
+    }
 }
 
 // Reads from the .txt file "data.txt"
@@ -225,10 +299,9 @@ void progInfo()
 void startGame()
 {
     score = 0;
-    printf("\n\nScore: %d", score);
-
-    // Generate and Print the board.
-    printf("\nBoard has been generated");
+    printf("\n\nScore: %d\n\n", score);
+    // Populate and Print the board.
+    printBoard();
 
     // Create Struct of player and Board
 
@@ -251,10 +324,20 @@ void startGame()
                 printf("\nRIGHT Arrow was pressed");
                 break;
             case 'p':
+                system("cls");
                 printf("\nPick up object");
+                printf("\n\nScore: %d\n\n", score);
+                // Populate and Print the board.
+                printBoard();
+                score++;
                 break;
             case 'd':
+                system("cls");
                 printf("\nDrop off object");
+                printf("\n\nScore: %d\n\n", score);
+                // Populate and Print the board.
+                printBoard();
+                score--;
                 break;
         }
 
@@ -309,8 +392,20 @@ void generateGameFile()
             fprintf(fp, "\n");
         }
     }
+
     fclose(fp);
-    return 0;
+    FILE *fp2 = fopen(filename, "r");
+
+    // Send every value from text file to an array in gameBoard
+    for(int x = 0; x < 40; x++)
+    {
+        for(int y = 0; y < 15; y++)
+        {
+            fscanf(fp2, "%d ", &boardOne.gameBoardText[x][y]);
+        }
+    }
+    // gameBoard.gameBoardText[x][y] = //item 1
+    fclose(fp);
 }
 
 void generateItemLocation()

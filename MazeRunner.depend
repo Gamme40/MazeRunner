@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1624253316 source:c:\users\amith philip\documents\codeblocksprojects\mazerunnergame\mazerunner\main.c
+1624305325 source:c:\users\amith philip\documents\codeblocksprojects\mazerunnergame\mazerunner\main.c
 	<stdio.h>
 	<stdlib.h>
 	<conio.h>
@@ -8,7 +8,7 @@
 1623708691 c:\users\amith philip\documents\codeblocksprojects\mazerunnergame\mazerunner\esd.h
 	<windows.h>
 
-1624224710 source:c:\users\amith philip\documents\codeblocksprojects\mazerunnergame\mazerunner\gameboardattributes.c
+1624254318 source:c:\users\amith philip\documents\codeblocksprojects\mazerunnergame\mazerunner\gameboardattributes.c
 
 1624211420 c:\users\amith philip\documents\codeblocksprojects\mazerunnergame\mazerunner\playerattributes.c
 
