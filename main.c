@@ -143,14 +143,6 @@ void loadStructToArray()
                 }
                 gameBoardWalls[x][y] = tempHold;
             }
-            /* DEBUG - Prints array with 0 as a wall
-            printf("%d\t", gameBoardWalls[x][y]);
-            if(boardOne.gameBoardText[x][y] % 15 == 0)
-            {
-                printf("\n");
-            }
-            */
-
         }
     }
 }
@@ -303,7 +295,8 @@ void startGame()
     // Populate and Print the board.
     printBoard();
 
-    // Create Struct of player and Board
+    // Place Player onto board
+
 
     // Wait for user input.
     do
