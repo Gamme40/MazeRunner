@@ -16,6 +16,8 @@
 // Global Variable
 int arrVar[10];
 int score;
+int xLocArrItem [5];
+int yLocArrItem [5];
 
 // Function definition which reads from a file
 void initialize();
@@ -27,6 +29,8 @@ void settingsGame();
 void newPlayer();
 void newGameBoard();
 void generateItemLocation();
+void generateStartDrop();
+void generateGameFile();
 
 // Colour text definitions - 0: Red, 1: Green, 2: Yellow, 3: Blue
 // Usage Example: colour("This is a String.", 2); // This will print "This is a String" in Yellow.
@@ -37,16 +41,38 @@ void colour(const char *s, int n);
 char keyPress;
 char gamePress;
 
+struct mazeRunner{
+    // Initialise at index [39,14]
+    int xyposition[1][2];
+    int hasObject; //99 - Yes 98- No
+} mRunner;
+
+struct gameBoard {
+    /* How many items on the board?
+    * Creates this matrix, should populate these with coordinates randomized between a row [0:34] and column [0:14]
+    * {[x][y]} {[x][y]} {[x][y]} {[x][y]} {[x][y]}
+    */
+    int xItemCo [5];
+    int yItemCo [5];
+
+    // Initialise as a StartDrop point x-index [35:39] and y-index as 14.
+    int xyStartDrop[2][5];
+
+    int gameScore;
+} gBoard;
+
+
 // Storage for maze runner
 struct mazeRunner playerOne;
 
 // Storage for game board attributes
-struct gameBoard boardOn;
+struct gameBoard boardOne;
+
 
 int main()
 {
     system("cls");
-    generateItemLocation();
+    initialize();
     menuOptions();
     return 0;
 
@@ -63,7 +89,22 @@ int main()
 
 void initialize()
 {
-    //playerOne.xyposition
+    generateItemLocation();
+    printf("Generation of item locations done.\n");
+    boardOne.gameScore = 0;
+    printf("Reset Game Score.\n");
+    generateStartDrop();
+    printf("Generated the start of player and drop off point.\n");
+    generateGameFile();
+    printf("Generated the basic game file.\n\n");
+
+    //generateStartDrop();
+    /* DEBUG
+    for(int i = 0; i < 5; i++)
+    {
+        printf("XY: %d %d\n", boardOne.xItemCo[i], boardOne.yItemCo[i]);
+    }
+    */
 }
 
 // Reads from the .txt file "data.txt"
@@ -233,7 +274,43 @@ void newPlayer()
 
 void newGameBoard ()
 {
-    // Read the data file and then store into the
+
+    // Read the data file and then store into the storage
+}
+
+void generateGameFile()
+{
+    char *filename = "gameBoard.txt";
+    FILE *fp = fopen(filename, "w");
+    if (fp == NULL)
+    {
+        printf("Error opening file. Please ensure the file exists within folder.\n");
+        return 0;
+    }
+
+    // Creates a "xxx xxx xxx..." 40x15 grid of numerical values from 001-600
+    for(int i = 1; i < 601; i++)
+    {
+        if(i > 9 && i < 100)
+        {
+            fprintf(fp, "0%d ", i);
+        }
+        else if (i > 99)
+        {
+            fprintf(fp, "%d ", i);
+        }
+        else
+        {
+            fprintf(fp, "00%d ", i);
+        }
+
+        if (i % 15 == 0 && i != 0)
+        {
+            fprintf(fp, "\n");
+        }
+    }
+    fclose(fp);
+    return 0;
 }
 
 void generateItemLocation()
@@ -243,16 +320,31 @@ void generateItemLocation()
     for(int z = 0; z<5; z++)
     {
         counter++;
-        // Generate item x location
-        int xLocItem = rand() % 75;
-        // Generate item y location
-        int yLocItem = rand() % 25;
+        // Generate and assign item location to X Array
+        boardOne.xItemCo[z] = rand() % 40;
+        // Generate and assign item location to Y Array
+        boardOne.yItemCo[z] = rand() % 15;
 
-        // Assign item location to
-        //gameBoard.xyItem[z] = info
-        printf("XY of %d: %d %d\t", counter, xLocItem, yLocItem);
-        printf("\n");
+        /* DEBUGGING
+        * printf("XY of %d: %d %d\t", counter, xLocArrItem[z], yLocArrItem[z]);
+        * printf("\n");
+        */
     }
+}
+
+void generateStartDrop()
+{
+    // Set Default Start/Drop Location
+    boardOne.xyStartDrop[0][0] = 39;
+    boardOne.xyStartDrop[0][1] = 19;
+    playerOne.xyposition[0][0] = 39;
+    playerOne.xyposition[0][1] = 19;
+    playerOne.hasObject = 98;
+}
+
+void addScore()
+{
+    boardOne.gameScore = boardOne.gameScore+1;
 }
 
 void settingsGame()
@@ -276,26 +368,4 @@ void colour(const char *s, int n) {
   colourize(s, t);
 }
 
-struct mazeRunner{
-    // Initialise at index [79,24]
-    int xyposition[1][1];
-    int hasObject; //99 - Yes 98- No
-} mRunner;
-
-struct gameBoard {
-    /* How many items on the board?
-    * Creates this matrix, should populate these with coordinates randomized between a row [0:74] and column [0:24]
-    * [00] [01]
-    * [10] [11]
-    * [20] [21]
-    * [30] [31]
-    * [40] [41]
-    */
-    int xyItem [2][5];
-
-    // Initialise as a StartDrop point x [74:84] and y as 24.
-    int xyStartDrop[2][5];
-
-    int gameScore;
-} gBoard;
 
